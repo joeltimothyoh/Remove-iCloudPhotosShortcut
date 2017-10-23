@@ -7,5 +7,5 @@ The script will:
 
 Upon a successful removal of the registry key, a message of success will be printed. 'iCloud Photos' should no longer be listed under 'This PC' in File Explorer.
 
-# Important
+## Important:
 Editing registry requires elevated priveleges. Be sure to run the script as an Administrator.

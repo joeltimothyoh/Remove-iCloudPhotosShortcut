@@ -58,4 +58,3 @@ if (foundkey) {
 } else {
     Write-Host "Registry key for removing iCloud Photos from This PC could not be found. Doing nothing."
 }
-pause
