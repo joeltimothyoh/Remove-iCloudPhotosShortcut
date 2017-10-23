@@ -1,8 +1,9 @@
 #############################################################################################################################################
-## 1. Running this script will remove 'iCloud Photos' icon from 'This PC' in Windows.                                                      ##
-## 2. The icon reappears every time iCloud is updated.                                                                                     ##   
-## 3. The following is the full path to the 'iCloud Photos' Registry Key which you can manually remove if necessary:                       ##
+## 1. Running this script will remove 'iCloud Photos' listed under 'This PC' in File Explorer in Windows.                                  ##
+## 2. The shortcut is automatically created every time iCloud for Windows is installed or updated.                                         ##
+## 3. The following is the full path to the 'iCloud Photos' registry key which you can use to manually remove the key if preferred:        ##
 ##     'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{F0D63F85-37EC-4097-B30D-61B4A8917118}' ##
+## -- For more information, see: https://www.eightforums.com/general-support/35046-remove-icloud-photos-pc.html                            ##
 #############################################################################################################################################
 
 $key = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{F0D63F85-37EC-4097-B30D-61B4A8917118}'
@@ -14,12 +15,12 @@ function foundkey
         $item = Get-Item -Path $key -ErrorAction Stop    # Convert exception from non-terminating to terminating
         if ($item) {
             $found = $true
-        }        
+        }
     } catch {
         $e = $_.Exception.GetType().Name            
         if ($e) {
             Write-Host "Finding the registry key failed." -ForegroundColor Yellow
-        }      
+        }
     }
     $found
 }
@@ -32,11 +33,11 @@ function removekey
     } catch {
         $e = $_.Exception.GetType().Name
         if ($e -eq 'SecurityException') {
-            Write-Host "Removing the registry key failed because removing a registry key requires elevated permissions. Run this script with administrative rights." -ForegroundColor Yellow
+            Write-Host "Removing the registry key failed because removing a registry key requires elevated priveleges. Run this script with administrative rights." -ForegroundColor Yellow
         }
         if ($e -eq 'ItemNotFoundException') {
             Write-Host "Removing the registry key failed because it could not be found." -ForegroundColor Yellow
-        }      
+        }
     }
     if ($success) {
         $true
@@ -57,15 +58,4 @@ if (foundkey) {
 } else {
     Write-Host "Registry key for removing iCloud Photos from This PC could not be found. Doing nothing."
 }
-    
-
-###############################################################################################################
-## For more information, see: https://www.eightforums.com/general-support/35046-remove-icloud-photos-pc.html ##
-###############################################################################################################
-
-#########################
-## Powershell Commands ##
-#########################
-
-#Remove-Item -Path 'HKLM:\SOFTWARE\Test\Key1'                           # This removes key named 'Key1'
-#Remove-ItemProperty -Path 'HKLM:\SOFTWARE\Test\Key2' -Name 'hi'        # This removes value named 'hi' in key named 'Key2'
+pause
