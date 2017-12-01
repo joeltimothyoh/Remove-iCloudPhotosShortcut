@@ -1,10 +1,14 @@
-#############################################################################################################################################
-## 1. Running this script will remove 'iCloud Photos' listed under 'This PC' in File Explorer in Windows.                                  ##
-## 2. The shortcut is automatically created every time iCloud for Windows is installed or updated.                                         ##
-## 3. The following is the full path to the 'iCloud Photos' registry key which you can use to manually remove the key if preferred:        ##
-##     'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{F0D63F85-37EC-4097-B30D-61B4A8917118}' ##
-## -- For more information, see: https://www.eightforums.com/general-support/35046-remove-icloud-photos-pc.html                            ##
-#############################################################################################################################################
+<#
+.SYNOPSIS
+Removes 'iCloud Photos' listed under 'This PC' in File Explorer in Windows.
+
+.DESCRIPTION
+The 'iCloud Photos' shortcut is automatically created every time iCloud for Windows is installed or updated. Removal of the shortcut is not possible within File Explorer, but can be achieved by removing the shortcut's associated registry key.
+
+.EXAMPLE
+.\RemoveiCloudPhotosFromThisPC.ps1
+
+#>
 
 $key = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{F0D63F85-37EC-4097-B30D-61B4A8917118}'
 
@@ -12,7 +16,7 @@ function foundkey
 {
     $found = $false
     try {
-        $item = Get-Item -Path $key -ErrorAction Stop    # Convert exception from non-terminating to terminating
+        $item = Get-Item -Path $key -ErrorAction Stop                       # ErrorAction Stop converts this exception from non-terminating to terminating
         if ($item) {
             $found = $true
         }
@@ -28,12 +32,12 @@ function foundkey
 function removekey
 {
     try {
-        Remove-Item -Path $key -ErrorAction Stop    # Convert exception from non-terminating to terminating
+        Remove-Item -Path $key -ErrorAction Stop                               
         $success = $true
     } catch {
         $e = $_.Exception.GetType().Name
         if ($e -eq 'SecurityException') {
-            Write-Host "Removing the registry key failed because removing a registry key requires elevated priveleges. Run this script with administrative rights." -ForegroundColor Yellow
+            Write-Host "Removing the registry key failed because removing a registry key requires elevated privileges. Run this script with administrative rights." -ForegroundColor Yellow
         }
         if ($e -eq 'ItemNotFoundException') {
             Write-Host "Removing the registry key failed because it could not be found." -ForegroundColor Yellow
