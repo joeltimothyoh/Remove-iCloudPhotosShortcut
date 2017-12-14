@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-Removes 'iCloud Photos' listed under 'This PC' in File Explorer in Windows.
+Removes 'iCloud Photos' listed under 'This PC' in File Explorer on Windows.
 
 .DESCRIPTION
 The 'iCloud Photos' shortcut is automatically created every time iCloud for Windows is installed or updated. Removal of the shortcut is not possible within File Explorer, but can be achieved by removing the shortcut's associated registry key.
@@ -63,7 +63,7 @@ function Remove-Key {
         # Handle potential exceptions by name
         $e = $_.Exception.GetType().Name
         if ($e -eq 'SecurityException') {
-            Write-Host "The registry key could not be removed due to insufficient priveleges." -ForegroundColor Yellow
+            Write-Host "The registry key could not be removed due to insufficient administrator privileges." -ForegroundColor Yellow
         }
         if ($e -eq 'ItemNotFoundException') {
             Write-Host "The registry key could not be found." -ForegroundColor Yellow
