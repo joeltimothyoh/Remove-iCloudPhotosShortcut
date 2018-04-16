@@ -6,7 +6,7 @@ Removes 'iCloud Photos' listed under 'This PC' in File Explorer on Windows.
 The 'iCloud Photos' shortcut is automatically created every time iCloud for Windows is installed or updated. Removal of the shortcut is not possible within File Explorer, but can be achieved by removing the shortcut's associated registry key.
 
 .EXAMPLE
-.\Remove-iCloud-Photos-Shortcut.ps1
+.\Remove-iCloudPhotosShortcut.ps1
 
 #>
 
@@ -79,7 +79,7 @@ function Remove-Key {
     $false
 }
 
-function Remove-iCloud-Photos-Shortcut {
+function Remove-iCloudPhotosShortcut {
 
     # Define path to registry key
     [string]$key = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{F0D63F85-37EC-4097-B30D-61B4A8917118}'
@@ -104,5 +104,5 @@ function Remove-iCloud-Photos-Shortcut {
 
 }
 
-# Call main function 
-Remove-iCloud-Photos-Shortcut
+# Call main function
+Remove-iCloudPhotosShortcut

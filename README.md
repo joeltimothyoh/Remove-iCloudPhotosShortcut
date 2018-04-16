@@ -1,4 +1,4 @@
-# Remove-iCloud-Photos-Shortcut
+# Remove-iCloudPhotosShortcut
 Removes 'iCloud Photos' listed under 'This PC' in File Explorer on Windows.
 
 ## Description
@@ -16,4 +16,4 @@ Simply manually run, or set the script to run on a schedule.
 Note: Editing the registry on Windows requires elevated permissions. Run the script with administrative rights.
 
 ## Example
-`.\Remove-iCloud-Photos-Shortcut.ps1`
+`.\Remove-iCloudPhotosShortcut.ps1`
