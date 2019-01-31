@@ -7,7 +7,6 @@ The 'iCloud Photos' shortcut is automatically created every time iCloud for Wind
 
 .EXAMPLE
 .\Remove-iCloudPhotosShortcut.ps1
-
 #>
 
 # This function attempts to find the registry key
@@ -17,14 +16,11 @@ function Find-Key {
     Param(
         [Parameter(Mandatory=$True,Position=0)]
         [string]$key
-        )
+    )
 
     try {
         # Get the registry key
         $item = Get-Item -Path $key -ErrorAction Stop       # ErrorAction Stop converts this exception from non-terminating to terminating
-
-        # Set flag as true if registry key is found
-        $success = $true
 
     } catch {
         # Handle potential exceptions by name
@@ -35,7 +31,7 @@ function Find-Key {
     }
 
     # Return true if registry key is found
-    if ($success) {
+    if ($item) {
         return $true
     }
 
@@ -50,7 +46,7 @@ function Remove-Key {
     Param(
         [Parameter(Mandatory=$True,Position=0)]
         [string]$key
-        )
+    )
 
     try {
         # Remove the registry key
