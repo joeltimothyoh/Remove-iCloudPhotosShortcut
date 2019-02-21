@@ -4,9 +4,9 @@ Removes iCloud Photos shortcuts from 'This PC' and 'Quick access' on Windows.
 
 ## Description
 
-iCloud Photos shortcuts are automatically created under 'This PC' and 'Quick access' in File Explorer every time iCloud for Windows is installed or updated, with the former being impossible to remove interactively. This script attempts to ease removal of the shortcuts by doing so programmatically.
+iCloud Photos shortcuts are automatically created under *This PC* and *Quick access* in `File Explorer` on **Windows** each time *iCloud for Windows* is installed or updated, with the former being impossible to remove interactively. This script attempts to ease removal of the shortcuts by doing so programmatically.
 
-Messages of success will be printed on the successful removal of each shortcut. The iCloud Photos shortcuts should not longer appear under 'This PC' and 'Quick access'.
+A message of success will be printed on the successful removal of each shortcut. The shortcuts should then no longer appear under *This PC* and *Quick access*.
 
 ## Usage
 
