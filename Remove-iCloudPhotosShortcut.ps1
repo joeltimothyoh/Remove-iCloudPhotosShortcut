@@ -9,95 +9,68 @@ The 'iCloud Photos' shortcut is automatically created every time iCloud for Wind
 .\Remove-iCloudPhotosShortcut.ps1
 #>
 
-# This function attempts to find the registry key
-function Find-Key {
-
-    # Define parameters
+# Gets the specified registry key
+function Get-RegistryKey {
     Param(
         [Parameter(Mandatory=$True,Position=0)]
-        [string]$key
+        [string]$Path
     )
-
+    # Get the registry key
     try {
-        # Get the registry key
-        $item = Get-Item -Path $key -ErrorAction Stop       # ErrorAction Stop converts this exception from non-terminating to terminating
-
-    } catch {
-        # Handle potential exceptions by name
-        $e = $_.Exception.GetType().Name
-        if ($e -eq 'ItemNotFoundException') {
-            Write-Host "The registry key could not be found." -ForegroundColor Yellow
-        }
+        $item = Get-Item -Path $Path -ErrorAction Stop       # ErrorAction Stop converts this exception from non-terminating to terminating for the handling of exceptions
+    }catch {
+        Write-Host "$($_.Exception.Message)" -ForegroundColor Yellow
     }
-
-    # Return true if registry key is found
-    if ($item) {
-        return $true
+    if ($item.PSProvider.Name -eq 'Registry') {
+        return $item
     }
-
-    # Assume false
-    $false
+    'Item found is not a registry key object.' | Write-Error
 }
 
-# This function attempts to remove the registry key
-function Remove-Key {
-
-    # Define parameters
+# Removes the specified registry key
+function Remove-RegistryKey {
+    [CmdletBinding(DefaultParameterSetName='Objects')]
     Param(
-        [Parameter(Mandatory=$True,Position=0)]
-        [string]$key
+        [Parameter(Mandatory=$True, ParameterSetName='Objects', Position=0)]
+        [Object]$InputObject
+        ,
+        [Parameter(Mandatory=$True, ParameterSetName='Paths', Position=0)]
+        [String]$Path
     )
-
+    # Remove the registry key
     try {
-        # Remove the registry key
-        Remove-Item -Path $key -ErrorAction Stop        # ErrorAction Stop converts this exception from non-terminating to terminating
-
-        # Set flag as true if registry key is removed
+        $item = if     ($PSBoundParameters['InputObject']) { $InputObject }
+                elseif ($PSBoundParameters['Path']) { $Path }
+        $item | Remove-Item -ErrorAction Stop        # ErrorAction Stop converts this exception from non-terminating to terminating for the handling of exceptions
         $success = $true
-
-    } catch {
-        # Handle potential exceptions by name
-        $e = $_.Exception.GetType().Name
-        if ($e -eq 'SecurityException') {
-            Write-Host "The registry key could not be removed due to insufficient administrator privileges." -ForegroundColor Yellow
-        }
-        if ($e -eq 'ItemNotFoundException') {
-            Write-Host "The registry key could not be found." -ForegroundColor Yellow
-        }
+    }catch {
+        Write-Host "$($_.Exception.Message)" -ForegroundColor Yellow
     }
-
-    # Return true if registry key is removed
     if ($success) {
         return $true
     }
-
-    # Assume false
     $false
 }
 
 function Remove-iCloudPhotosShortcut {
 
-    # Define path to registry key
-    [string]$key = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{F0D63F85-37EC-4097-B30D-61B4A8917118}'
+    # Registry key responsible for the 'This PC' iCloud Photos Shortcut
+    [string]$REGISTRY_KEY_PATH = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{F0D63F85-37EC-4097-B30D-61B4A8917118}'
 
-    Write-Host "Finding key..."
-
-    # Attempt to find the registry key, then print appropriate status messages of the result
-    if (Find-Key $key) {
+    # Find the registry key
+    Write-Host "Finding the iCloud Shortcut registry key..."
+    $registryKeyObj = Get-RegistryKey -Path $REGISTRY_KEY_PATH
+    if ($registryKeyObj) {
         Write-Host "Found key." -ForegroundColor Cyan
+
+        # Attempt to remove the registry key
         Write-Host "Removing key..."
+        if (Remove-RegistryKey -InputObject $registryKeyObj) { Write-Host "Successfully removed iCloud Photos shortcut from This PC." -ForegroundColor Green }
+        else { Write-Host "Failed to remove iCloud Photos shortcut from This PC." -ForegroundColor Magenta }
 
-        # Attempt to remove the registry key, then print appropriate status messages of the result
-        if (Remove-Key $key) {
-            Write-Host "Removed key." -ForegroundColor Cyan
-            Write-Host "Successfully removed iCloud Photos shortcut from This PC." -ForegroundColor Green
-        } else {
-            Write-Host "Failed to remove iCloud Photos shortcut from This PC."
-        }
-    } else {
-        Write-Host "The registry key for iCloud Photos shortcut could not be found. Doing nothing."
+    }else {
+        Write-Host "The registry key for iCloud Photos shortcut could not be found. Doing nothing."-ForegroundColor Cyan
     }
-
 }
 
 # Call main function
