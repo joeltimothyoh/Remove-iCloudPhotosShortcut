@@ -51,7 +51,7 @@ function Remove-RegistryKey {
     $false
 }
 
-# Gets matching Windows Explorer Quick access items
+# Gets matching Quick access items
 function Get-QuickAccessItem {
     Param(
         [Parameter(Mandatory=$False,Position=0)]
@@ -65,13 +65,13 @@ function Get-QuickAccessItem {
     $quickAccessItems = $quickAccess.Namespace("shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}").Items()
 
     # Filter through items
-    $item = if ($PSBoundParameters['Name'] -And $PSBoundParameters['Path']) { $quickAccessItems | ? { $_.Name -eq $Name -And $_.Path -eq $Path } }
+    $item = if     ($PSBoundParameters['Name'] -And $PSBoundParameters['Path']) { $quickAccessItems | ? { $_.Name -eq $Name -And $_.Path -eq $Path } }
             elseif ($PSBoundParameters['Name']) { $quickAccessItems | ? { $_.Name -eq $Name } }
             elseif ($PSBoundParameters['Path']) { $quickAccessItems | ? { $_.Path -eq $Path } }
     $item
 }
 
-# Removes matching Windows Explorer Quick access items
+# Removes matching Quick access items
 function Remove-QuickAccessItem {
     Param(
         [Parameter(Mandatory=$False, Position=0)]
@@ -92,7 +92,7 @@ function Remove-QuickAccessItem {
     if (!$item) { return $false }
 
     # Remove matching items
-    $item.InvokeVerb("unpinfromhome")   # Does not appear to return an exit code, hence a check after removal is necessary
+    $item.InvokeVerb("unpinfromhome")       # Does not appear to return an exit code, hence a check after removal is necessary
 
     # Verify if items have been removed
     $itemPresent = Get-QuickAccessItem @params
@@ -103,7 +103,6 @@ function Remove-QuickAccessItem {
 }
 
 function Remove-iCloudPhotosShortcut {
-
     # iCloud Photos This PC shortcut's associated registry key
     [string]$REGISTRY_KEY_PATH = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{F0D63F85-37EC-4097-B30D-61B4A8917118}'
 
@@ -130,11 +129,9 @@ function Remove-iCloudPhotosShortcut {
         # Attempt to remove the shortcut
         if (Remove-QuickAccessItem -Name $quickAccessObj.Name -Path $quickAccessObj.Path) {
             "Successfully removed iCloud Photos Quick access shortcut." | Write-Host -ForegroundColor Green
-        }else {
-            "Failed to remove iCloud Photos Quick access shortcut." | Write-Host -ForegroundColor Magenta
-        }
+        }else { "Failed to remove iCloud Photos Quick access shortcut." | Write-Host -ForegroundColor Magenta }
     }else {
-        "The iCloud Photos Quick access shortcut could not be found. Doing nothing." | Write-Host -ForegroundColor Magenta
+        "The iCloud Photos Quick access shortcut could not be found. Doing nothing." | Write-Host -ForegroundColor Cyan
     }
 }
 
