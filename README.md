@@ -1,19 +1,12 @@
 # Remove-iCloudPhotosShortcut
 
-Removes 'iCloud Photos' listed under 'This PC' in File Explorer on Windows.
+Removes iCloud Photos shortcuts from 'This PC' and 'Quick access' on Windows.
 
 ## Description
 
-The 'iCloud Photos' shortcut is automatically listed under 'This PC' in File Explorer every time iCloud for Windows is installed or updated. Removal of the shortcut is not possible within File Explorer, but can be achieved by removing the shortcut's associated registry key.
+iCloud Photos shortcuts are automatically created under 'This PC' and 'Quick access' in File Explorer every time iCloud for Windows is installed or updated, with the former being impossible to remove interactively. This script attempts to ease removal of the shortcuts by doing so programmatically.
 
-## Process
-
-The script performs as follows:
-
-1. Finds the registry key
-2. Attempts to remove the registry key
-
-Upon successful removal of the registry key, a message of success will be printed. 'iCloud Photos' should no longer be listed under 'This PC' in File Explorer.
+Messages of success will be printed on the successful removal of each shortcut. The iCloud Photos shortcuts should not longer appear under 'This PC' and 'Quick access'.
 
 ## Usage
 
@@ -45,4 +38,4 @@ Set-ExecutionPolicy Undefined -Force
 
 ## Requirements
 
-* Windows with <a href="https://docs.microsoft.com/en-us/powershell/scripting/setup/installing-windows-powershell?view=powershell-5.1" target="_blank" title="PowerShell">PowerShell</a>.
+* Windows with [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/setup/installing-windows-powershell?view=powershell-5.1).
