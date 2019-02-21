@@ -19,7 +19,7 @@ function Get-RegistryKey {
     try {
         $item = Get-Item -Path $Path -ErrorAction Stop       # ErrorAction Stop converts this exception from non-terminating to terminating for the handling of exceptions
     }catch {
-        Write-Host "$($_.Exception.Message)" -ForegroundColor Yellow
+        "$($_.Exception.Message)" | Write-Host -ForegroundColor Yellow
     }
     if ($item.PSProvider.Name -eq 'Registry') {
         return $item
@@ -44,7 +44,7 @@ function Remove-RegistryKey {
         $item | Remove-Item -ErrorAction Stop        # ErrorAction Stop converts this exception from non-terminating to terminating for the handling of exceptions
         $success = $true
     }catch {
-        Write-Host "$($_.Exception.Message)" -ForegroundColor Yellow
+        "$($_.Exception.Message)" | Write-Host -ForegroundColor Yellow
     }
     if ($success) {
         return $true
@@ -58,18 +58,18 @@ function Remove-iCloudPhotosShortcut {
     [string]$REGISTRY_KEY_PATH = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{F0D63F85-37EC-4097-B30D-61B4A8917118}'
 
     # Find the registry key
-    Write-Host "Finding the iCloud Shortcut registry key..."
+    "Finding the iCloud Shortcut registry key..." | Write-Host
     $registryKeyObj = Get-RegistryKey -Path $REGISTRY_KEY_PATH
     if ($registryKeyObj) {
-        Write-Host "Found key." -ForegroundColor Cyan
+        "Found key." | Write-Host -ForegroundColor Cyan
 
         # Attempt to remove the registry key
-        Write-Host "Removing key..."
-        if (Remove-RegistryKey -InputObject $registryKeyObj) { Write-Host "Successfully removed iCloud Photos shortcut from This PC." -ForegroundColor Green }
-        else { Write-Host "Failed to remove iCloud Photos shortcut from This PC." -ForegroundColor Magenta }
+        "Removing key..." | Write-Host
+        if (Remove-RegistryKey -InputObject $registryKeyObj) { "Successfully removed iCloud Photos shortcut from This PC." | Write-Host -ForegroundColor Green }
+        else { "Failed to remove iCloud Photos shortcut from This PC." | Write-Host -ForegroundColor Magenta }
 
     }else {
-        Write-Host "The registry key for iCloud Photos shortcut could not be found. Doing nothing."-ForegroundColor Cyan
+        "The registry key for iCloud Photos shortcut could not be found. Doing nothing." | Write-Host -ForegroundColor Cyan
     }
 }
 
