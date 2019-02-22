@@ -20,7 +20,7 @@ function Get-RegistryKey {
         $item = Get-Item -Path $Path -ErrorAction Stop       # ErrorAction Stop converts this exception from non-terminating to terminating for the handling of exceptions
         if ($item.PSProvider.Name -eq 'Registry') {
             $item
-        }else { 'Item found is not ax registry key object.' | Write-Error }
+        }else { 'Item found is not a registry key object.' | Write-Error }
     }catch {
         "$($_.Exception.Message)" | Write-Host -ForegroundColor Yellow
     }
@@ -80,16 +80,18 @@ function Remove-QuickAccessItem {
         [Parameter(Mandatory=$False, Position=1)]
         [string]$Path
     )
-
     # Process parameters for calling
     $params = @{}
     $PSBoundParameters.GetEnumerator() | % {
         $params[$_.Key] = $_.Value
     }
 
-    # Get Quick access items
+    # Get matching Quick access items
     $item = Get-QuickAccessItem @params
-    if (!$item) { return $false }
+    if (!$item) {
+        'No matching Quick access items could be found.' | Write-Error
+        return $false
+    }
 
     # Remove matching items
     $item.InvokeVerb("unpinfromhome")       # Does not appear to return an exit code, hence a check after removal is necessary
