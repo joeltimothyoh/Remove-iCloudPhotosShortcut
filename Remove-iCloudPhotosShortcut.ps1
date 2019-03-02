@@ -18,12 +18,14 @@ function Get-RegistryKey {
     # Get the registry key
     try {
         $item = Get-Item -Path $Path -ErrorAction Stop       # ErrorAction Stop converts this exception from non-terminating to terminating for the handling of exceptions
-        if ($item.PSProvider.Name -eq 'Registry') {
-            $item
-        }else { 'Item found is not a registry key object.' | Write-Error }
+        if ($item.PSProvider.Name -ne 'Registry') {
+            'Item found is not a registry key object.' | Write-Error
+            return
+        }
     }catch {
         "$($_.Exception.Message)" | Write-Host -ForegroundColor Yellow
     }
+    $item
 }
 
 # Removes the specified registry key
