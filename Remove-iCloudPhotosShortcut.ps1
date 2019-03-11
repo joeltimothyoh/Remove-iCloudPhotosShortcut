@@ -9,135 +9,177 @@ iCloud Photos shortcuts are automatically created under 'This PC' and 'Quick acc
 .\Remove-iCloudPhotosShortcut.ps1
 #>
 
-# Gets the specified registry key
-function Get-RegistryKey {
+# Gets registry item(s)
+function Get-RegistryItem {
+    [CmdletBinding()]
     Param(
-        [Parameter(Mandatory=$True,Position=0)]
-        [string]$Path
+        [Parameter(Mandatory=$True, ValueFromPipeline=$True, Position=0)]
+        $Path
     )
-    # Get the registry key
-    try {
-        $item = Get-Item -Path $Path -ErrorAction Stop       # ErrorAction Stop converts this exception from non-terminating to terminating for the handling of exceptions
-        if ($item.PSProvider.Name -ne 'Registry') {
-            'Item found is not a registry key object.' | Write-Error
-            return
+    begin {
+        $_object = New-Object System.Collections.ArrayList
+    }process {
+        # Perform for each item
+        $Path | % {
+            try {
+                $_item = $_ | Get-Item -ErrorAction Stop
+                if ($_item.PSProvider.Name -ne 'Registry') {
+                    throw 'Item found is not a registry key object.'
+                }
+                $_object.Add($_item) | Out-Null
+            }catch {
+                "$($_.Exception.Message)" | Write-Error
+            }
         }
-    }catch {
-        "$($_.Exception.Message)" | Write-Host -ForegroundColor Yellow
+    }end {
+        $_object
     }
-    $item
 }
 
-# Removes the specified registry key
-function Remove-RegistryKey {
-    [CmdletBinding(DefaultParameterSetName='Objects')]
+# Removes registry item(s)
+function Remove-RegistryItem {
+    [CmdletBinding()]
     Param(
-        [Parameter(Mandatory=$True, ParameterSetName='Objects', Position=0)]
-        [Object]$InputObject
-        ,
-        [Parameter(Mandatory=$True, ParameterSetName='Paths', Position=0)]
-        [String]$Path
+        [Parameter(Mandatory=$True, ValueFromPipeline=$True, Position=0)]
+        $Path
     )
-    # Remove the registry key
-    try {
-        $item = if     ($PSBoundParameters['InputObject']) { $InputObject }
-                elseif ($PSBoundParameters['Path']) { $Path }
-        $item | Remove-Item -ErrorAction Stop        # ErrorAction Stop converts this exception from non-terminating to terminating for the handling of exceptions
-        $success = $true
-    }catch {
-        "$($_.Exception.Message)" | Write-Host -ForegroundColor Yellow
+    begin {
+    }process {
+        # Perform for each item
+        $Path | % {
+            try {
+                $_item = $_ | Get-Item -ErrorAction Stop
+                if ($_item.PSProvider.Name -ne 'Registry') {
+                    throw 'Item found is not a registry key object.'
+                }
+                $_item | Remove-Item -ErrorAction Stop
+            }catch {
+                "$($_.Exception.Message)" | Write-Error
+            }
+        }
     }
-    if ($success) {
-        return $true
-    }
-    $false
 }
 
-# Gets matching Quick access items
+# Gets pinned Quick access items
 function Get-QuickAccessItem {
+    [CmdletBinding(DefaultParameterSetName='Names')]
     Param(
-        [Parameter(Mandatory=$False,Position=0)]
-        [string]$Name
+        [Parameter(ParameterSetName='Names', Mandatory=$True, Position=0)]
+        $Name
         ,
-        [Parameter(Mandatory=$False,Position=1)]
-        [string]$Path
+        [Parameter(ParameterSetName='Paths', Mandatory=$True, ValueFromPipeline=$True, Position=0)]
+        $Path
     )
-    # Get all Quick access items
-    $quickAccess = New-Object -ComObject shell.application
-    $quickAccessItems = $quickAccess.Namespace("shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}").Items()
-
-    # Filter through items
-    $item = if     ($PSBoundParameters['Name'] -And $PSBoundParameters['Path']) { $quickAccessItems | ? { $_.Name -eq $Name -And $_.Path -eq $Path } }
-            elseif ($PSBoundParameters['Name']) { $quickAccessItems | ? { $_.Name -eq $Name } }
-            elseif ($PSBoundParameters['Path']) { $quickAccessItems | ? { $_.Path -eq $Path } }
-    $item
+    begin {
+        $_qAObject = New-Object -ComObject shell.application
+        $_object = New-Object System.Collections.ArrayList
+    }process {
+        try {
+            $_inputObject = if ($PSBoundParameters['Name']) { $Name }
+                            elseif ($PSBoundParameters['Path']) { $Path }
+            # Get all pinned Quick access items
+            $_qAItem = $_qAObject.Namespace("shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}").Items() | ? { $_.IsFolder -eq $true }
+            # Get matching item(s)
+            $_inputObject | % {
+                try {
+                    $_query = $_
+                    $_item = if ($PSBoundParameters['Name']) { $_qAItem | ? { $_.Name -like $_query } }
+                             elseif ($PSBoundParameters['Path']) { $_qAItem | ? { $_.Path -eq $_query -Or $_.Path -eq $_query.Path } }
+                    if (!$_item) {
+                        if ($PSBoundParameters['Name']) { throw "Cannot find Quick access item with the name '$($_)'." }
+                        elseif ($PSBoundParameters['Path']) { throw "Cannot find Quick access item with the path '$($_)'." }
+                    }
+                    $_object.Add($_item) | Out-Null
+                }catch {
+                    "$($_.Exception.Message)" | Write-Error
+                }
+            }
+        }catch {
+            "$($_.Exception.Message)" | Write-Error
+        }
+    }end {
+        $_object
+    }
 }
 
-# Removes matching Quick access items
+# Removes pinned Quick access items
 function Remove-QuickAccessItem {
+    [CmdletBinding(DefaultParameterSetName='Names')]
     Param(
-        [Parameter(Mandatory=$False, Position=0)]
-        [string]$Name
+        [Parameter(ParameterSetName='Names', Mandatory=$True, Position=0)]
+        $Name
         ,
-        [Parameter(Mandatory=$False, Position=1)]
-        [string]$Path
+        [Parameter(ParameterSetName='Paths', Mandatory=$True, ValueFromPipeline=$True, Position=0)]
+        $Path
     )
-    # Process parameters for calling
-    $params = @{}
-    $PSBoundParameters.GetEnumerator() | % {
-        $params[$_.Key] = $_.Value
+    begin {
+        $_object = New-Object System.Collections.ArrayList
+    }process {
+        try {
+            $_inputObject = if ($PSBoundParameters['Name']) { $Name }
+                            elseif ($PSBoundParameters['Path']) { $Path }
+            # Get matching item(s)
+            $_inputObject | % {
+                try {
+                    $_item = if ($PSBoundParameters['Name']) { Get-QuickAccessItem -Name $_ -ErrorAction Stop }
+                             elseif ($PSBoundParameters['Path']) { Get-QuickAccessItem -Path $_ -ErrorAction Stop }
+                    $_object.Add($_item) | Out-Null
+                }catch {
+                    "$($_.Exception.Message)" | Write-Error
+                }
+            }
+        }catch {
+            "$($_.Exception.Message)" | Write-Error
+        }
+    }end {
+        # Remove matching item(s)
+        $_object | % {
+            try {
+                $_.InvokeVerb("unpinfromhome")
+                # The above method does not return any value. A post-call check is necessary to ascertain successful removal
+                $_itemPresent = $_ | Get-QuickAccessItem -ErrorAction SilentlyContinue
+                if ($_itemPresent) { throw "Failed to remove Quick access shortcut '$($_.Path)'." }
+            }catch {
+                "$($_.Exception.Message)" | Write-Error
+            }
+        }
     }
-
-    # Get matching Quick access items
-    $item = Get-QuickAccessItem @params
-    if (!$item) {
-        'No matching Quick access items could be found.' | Write-Error
-        return $false
-    }
-
-    # Remove matching items
-    $item.InvokeVerb("unpinfromhome")       # Does not appear to return an exit code, hence a check after removal is necessary
-
-    # Verify if items have been removed
-    $itemPresent = Get-QuickAccessItem @params
-    if (!$itemPresent) {
-        return $true
-    }
-    $false
 }
 
 function Remove-iCloudPhotosShortcut {
+    [CmdletBinding()]
     Param()
-    # iCloud Photos This PC shortcut's associated registry key
-    [string]$REGISTRY_KEY_PATH = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{F0D63F85-37EC-4097-B30D-61B4A8917118}'
-
-    # Find the registry key
-    "Removing the iCloud Photos This PC shortcut..." | Write-Host
-    $registryKeyObj = Get-RegistryKey -Path $REGISTRY_KEY_PATH
-    if ($registryKeyObj) {
-        # Attempt to remove the shortcut
-        if (Remove-RegistryKey -InputObject $registryKeyObj) {
+    function Remove-iCloudPhotosThisPCShortcut {
+        [CmdletBinding()]
+        Param()
+        # iCloud Photos This PC shortcut's associated registry key
+        [string]$REGISTRY_KEY_PATH = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{F0D63F85-37EC-4097-B30D-61B4A8917118}'
+        try {
+            "Removing the iCloud Photos This PC shortcut" | Write-Host
+            $_registryItem = Get-RegistryItem -Path $REGISTRY_KEY_PATH -ErrorAction Stop
+            $_registryItem | Remove-RegistryItem -ErrorAction Stop
             "Successfully removed iCloud Photos This PC shortcut." | Write-Host -ForegroundColor Green
-        }else { "Failed to remove iCloud Photos This PC shortcut." | Write-Host -ForegroundColor Magenta }
-    }else {
-        "The iCloud Photos This PC shortcut could not be found. Doing nothing." | Write-Host -ForegroundColor Cyan
+        }catch {
+            "Error: $($_.Exception.Message)" | Write-Host -ForegroundColor Yellow
+        }
     }
-
-    # iCloud Photos Quick access shortcut's item properties
-    [string]$QA_ITEM_NAME = 'iCloud Photos'
-    [string]$QA_ITEM_PATH = '::{20D04FE0-3AEA-1069-A2D8-08002B30309D}\::{F0D63F85-37EC-4097-B30D-61B4A8917118}'
-
-    # Find the shortcut
-    "`nRemoving the iCloud Photos Quick access shortcut..." | Write-Host
-    $quickAccessObj = Get-QuickAccessItem -Name $QA_ITEM_NAME -Path $QA_ITEM_PATH
-    if ($quickAccessObj) {
-        # Attempt to remove the shortcut
-        if (Remove-QuickAccessItem -Name $quickAccessObj.Name -Path $quickAccessObj.Path) {
+    function Remove-iCloudPhotosQuickAccessShortcut {
+        [CmdletBinding()]
+        Param()
+        $ErrorActionPreference = 'Stop'
+        # iCloud Photos Quick access shortcut's item properties
+        [string]$QA_ITEM_PATH = '::{20D04FE0-3AEA-1069-A2D8-08002B30309D}\::{F0D63F85-37EC-4097-B30D-61B4A8917118}'
+        try {
+            "Removing the iCloud Photos Quick access shortcut" | Write-Host
+            $_quickAccessItem = Get-QuickAccessItem -Path $QA_ITEM_PATH -ErrorAction Stop
+            $_quickAccessItem | Remove-QuickAccessItem -ErrorAction Stop
             "Successfully removed iCloud Photos Quick access shortcut." | Write-Host -ForegroundColor Green
-        }else { "Failed to remove iCloud Photos Quick access shortcut." | Write-Host -ForegroundColor Magenta }
-    }else {
-        "The iCloud Photos Quick access shortcut could not be found. Doing nothing." | Write-Host -ForegroundColor Cyan
+        }catch {
+            "Error: $($_.Exception.Message)" | Write-Host -ForegroundColor Yellow
+        }
     }
+    Remove-iCloudPhotosThisPCShortcut
+    Remove-iCloudPhotosQuickAccessShortcut
 }
 
 # Call main function
