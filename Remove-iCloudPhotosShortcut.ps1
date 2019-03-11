@@ -17,7 +17,6 @@ function Get-RegistryItem {
         $Path
     )
     begin {
-        $_object = New-Object System.Collections.ArrayList
     }process {
         # Perform for each item
         $Path | % {
@@ -26,13 +25,11 @@ function Get-RegistryItem {
                 if ($_item.PSProvider.Name -ne 'Registry') {
                     throw 'Item found is not a registry key object.'
                 }
-                $_object.Add($_item) | Out-Null
+                $_item
             }catch {
                 "$($_.Exception.Message)" | Write-Error
             }
         }
-    }end {
-        $_object
     }
 }
 
@@ -72,7 +69,6 @@ function Get-QuickAccessItem {
     )
     begin {
         $_qAObject = New-Object -ComObject shell.application
-        $_object = New-Object System.Collections.ArrayList
     }process {
         try {
             $_inputObject = if ($PSBoundParameters['Name']) { $Name }
@@ -89,7 +85,7 @@ function Get-QuickAccessItem {
                         if ($PSBoundParameters['Name']) { throw "Cannot find Quick access item with the name '$($_)'." }
                         elseif ($PSBoundParameters['Path']) { throw "Cannot find Quick access item with the path '$($_)'." }
                     }
-                    $_object.Add($_item) | Out-Null
+                    $_item
                 }catch {
                     "$($_.Exception.Message)" | Write-Error
                 }
@@ -97,8 +93,6 @@ function Get-QuickAccessItem {
         }catch {
             "$($_.Exception.Message)" | Write-Error
         }
-    }end {
-        $_object
     }
 }
 
@@ -123,25 +117,15 @@ function Remove-QuickAccessItem {
                 try {
                     $_item = if ($PSBoundParameters['Name']) { Get-QuickAccessItem -Name $_ -ErrorAction Stop }
                              elseif ($PSBoundParameters['Path']) { Get-QuickAccessItem -Path $_ -ErrorAction Stop }
-                    $_object.Add($_item) | Out-Null
+                    $_item.InvokeVerb("unpinfromhome")      # The method does not return any value. A post-check is necessary to ascertain successful removal
+                    $_itemPresent = $_item | Get-QuickAccessItem -ErrorAction SilentlyContinue
+                    if ($_itemPresent) { throw "Failed to remove Quick access shortcut '$($_item.Path)'." }
                 }catch {
                     "$($_.Exception.Message)" | Write-Error
                 }
             }
         }catch {
             "$($_.Exception.Message)" | Write-Error
-        }
-    }end {
-        # Remove matching item(s)
-        $_object | % {
-            try {
-                $_.InvokeVerb("unpinfromhome")
-                # The above method does not return any value. A post-call check is necessary to ascertain successful removal
-                $_itemPresent = $_ | Get-QuickAccessItem -ErrorAction SilentlyContinue
-                if ($_itemPresent) { throw "Failed to remove Quick access shortcut '$($_.Path)'." }
-            }catch {
-                "$($_.Exception.Message)" | Write-Error
-            }
         }
     }
 }
@@ -166,8 +150,7 @@ function Remove-iCloudPhotosShortcut {
     function Remove-iCloudPhotosQuickAccessShortcut {
         [CmdletBinding()]
         Param()
-        $ErrorActionPreference = 'Stop'
-        # iCloud Photos Quick access shortcut's item properties
+        # iCloud Photos Quick access shortcut's item path
         [string]$QA_ITEM_PATH = '::{20D04FE0-3AEA-1069-A2D8-08002B30309D}\::{F0D63F85-37EC-4097-B30D-61B4A8917118}'
         try {
             "Removing the iCloud Photos Quick access shortcut" | Write-Host
