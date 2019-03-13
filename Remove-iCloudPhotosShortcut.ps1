@@ -19,11 +19,11 @@ function Get-RegistryItem {
     begin {
     }process {
         # Perform for each item
-        $Path | % {
+        $Path | ForEach-Object {
             try {
                 $_item = $_ | Get-Item -ErrorAction Stop
                 if ($_item.PSProvider.Name -ne 'Registry') {
-                    throw 'Item found is not a registry key object.'
+                    throw "The item '$_item' is not a registry key object."
                 }
                 $_item
             }catch {
@@ -43,11 +43,11 @@ function Remove-RegistryItem {
     begin {
     }process {
         # Perform for each item
-        $Path | % {
+        $Path | ForEach-Object {
             try {
                 $_item = $_ | Get-Item -ErrorAction Stop
                 if ($_item.PSProvider.Name -ne 'Registry') {
-                    throw 'Item found is not a registry key object.'
+                    throw "The item '$_item' is not a registry key object."
                 }
                 $_item | Remove-Item -ErrorAction Stop
             }catch {
@@ -74,13 +74,13 @@ function Get-QuickAccessItem {
             $_inputObject = if ($PSBoundParameters['Name']) { $Name }
                             elseif ($PSBoundParameters['Path']) { $Path }
             # Get all pinned Quick access items
-            $_qAItem = $_qAObject.Namespace("shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}").Items() | ? { $_.IsFolder -eq $true }
+            $_qAItem = $_qAObject.Namespace("shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}").Items() | Where-Object { $_.IsFolder -eq $true }
             # Get matching item(s)
-            $_inputObject | % {
+            $_inputObject | ForEach-Object {
                 try {
                     $_query = $_
-                    $_item = if ($PSBoundParameters['Name']) { $_qAItem | ? { $_.Name -like $_query } }
-                             elseif ($PSBoundParameters['Path']) { $_qAItem | ? { $_.Path -eq $_query -Or $_.Path -eq $_query.Path } }
+                    $_item = if ($PSBoundParameters['Name']) { $_qAItem | Where-Object { $_.Name -like $_query } }
+                             elseif ($PSBoundParameters['Path']) { $_qAItem | Where-Object { $_.Path -eq $_query -Or $_.Path -eq $_query.Path } }
                     if (!$_item) {
                         if ($PSBoundParameters['Name']) { throw "Cannot find Quick access item with the name '$($_)'." }
                         elseif ($PSBoundParameters['Path']) { throw "Cannot find Quick access item with the path '$($_)'." }
@@ -107,13 +107,12 @@ function Remove-QuickAccessItem {
         $Path
     )
     begin {
-        $_object = New-Object System.Collections.ArrayList
     }process {
         try {
             $_inputObject = if ($PSBoundParameters['Name']) { $Name }
                             elseif ($PSBoundParameters['Path']) { $Path }
             # Get matching item(s)
-            $_inputObject | % {
+            $_inputObject | ForEach-Object {
                 try {
                     $_item = if ($PSBoundParameters['Name']) { Get-QuickAccessItem -Name $_ -ErrorAction Stop }
                              elseif ($PSBoundParameters['Path']) { Get-QuickAccessItem -Path $_ -ErrorAction Stop }
