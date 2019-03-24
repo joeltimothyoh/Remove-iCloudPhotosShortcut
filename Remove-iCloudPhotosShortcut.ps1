@@ -13,8 +13,9 @@ iCloud Photos shortcuts are automatically created under 'This PC' and 'Quick acc
 function Get-RegistryItem {
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory=$True, ValueFromPipeline=$True, Position=0)]
-        $Path
+        [Parameter(Mandatory=$True, ValueFromPipeline=$True, ValueFromPipelineByPropertyName=$True, Position=0)]
+        [ValidateNotNullOrEmpty()]
+        [string[]]$Path
     )
     begin {
     }process {
@@ -37,8 +38,9 @@ function Get-RegistryItem {
 function Remove-RegistryItem {
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory=$True, ValueFromPipeline=$True, Position=0)]
-        $Path
+        [Parameter(Mandatory=$True, ValueFromPipeline=$True, ValueFromPipelineByPropertyName=$True, Position=0)]
+        [ValidateNotNullOrEmpty()]
+        [string[]]$Path
     )
     begin {
     }process {
@@ -59,13 +61,15 @@ function Remove-RegistryItem {
 
 # Gets pinned Quick access items
 function Get-QuickAccessItem {
-    [CmdletBinding(DefaultParameterSetName='Names')]
+    [CmdletBinding(DefaultParameterSetName='Name')]
     Param(
-        [Parameter(ParameterSetName='Names', Mandatory=$True, Position=0)]
-        $Name
+        [Parameter(ParameterSetName='Name', Mandatory=$True, Position=0)]
+        [ValidateNotNullOrEmpty()]
+        [string[]]$Name
         ,
-        [Parameter(ParameterSetName='Paths', Mandatory=$True, ValueFromPipeline=$True, Position=0)]
-        $Path
+        [Parameter(ParameterSetName='Path', Mandatory=$True, ValueFromPipeline=$True, ValueFromPipelineByPropertyName=$True, Position=0)]
+        [ValidateNotNullOrEmpty()]
+        [string[]]$Path
     )
     begin {
         $_qAObject = New-Object -ComObject shell.application
@@ -98,13 +102,15 @@ function Get-QuickAccessItem {
 
 # Removes pinned Quick access items
 function Remove-QuickAccessItem {
-    [CmdletBinding(DefaultParameterSetName='Names')]
+    [CmdletBinding(DefaultParameterSetName='Name')]
     Param(
-        [Parameter(ParameterSetName='Names', Mandatory=$True, Position=0)]
-        $Name
+        [Parameter(ParameterSetName='Name', Mandatory=$True, Position=0)]
+        [ValidateNotNullOrEmpty()]
+        [string[]]$Name
         ,
-        [Parameter(ParameterSetName='Paths', Mandatory=$True, ValueFromPipeline=$True, Position=0)]
-        $Path
+        [Parameter(ParameterSetName='Path', Mandatory=$True, ValueFromPipeline=$True, ValueFromPipelineByPropertyName=$True, Position=0)]
+        [ValidateNotNullOrEmpty()]
+        [string[]]$Path
     )
     begin {
     }process {
@@ -140,7 +146,7 @@ function Remove-iCloudPhotosShortcut {
         try {
             "Removing the iCloud Photos This PC shortcut" | Write-Host
             $_registryItem = Get-RegistryItem -Path $REGISTRY_KEY_PATH -ErrorAction Stop
-            $_registryItem | Remove-RegistryItem -ErrorAction Stop
+            $_registryItem.PSPath | Remove-RegistryItem -ErrorAction Stop
             "Successfully removed iCloud Photos This PC shortcut." | Write-Host -ForegroundColor Green
         }catch {
             "Error: $($_.Exception.Message)" | Write-Host -ForegroundColor Yellow
