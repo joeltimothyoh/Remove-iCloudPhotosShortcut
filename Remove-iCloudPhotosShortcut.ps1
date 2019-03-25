@@ -84,7 +84,7 @@ function Get-QuickAccessItem {
                 try {
                     $_query = $_
                     $_item = if ($PSBoundParameters['Name']) { $_qAItem | Where-Object { $_.Name -like $_query } }
-                             elseif ($PSBoundParameters['Path']) { $_qAItem | Where-Object { $_.Path -eq $_query -Or $_.Path -eq $_query.Path } }
+                             elseif ($PSBoundParameters['Path']) { $_qAItem | Where-Object { $_.Path -eq $_query } }
                     if (!$_item) {
                         if ($PSBoundParameters['Name']) { throw "Cannot find Quick access item with the name '$($_)'." }
                         elseif ($PSBoundParameters['Path']) { throw "Cannot find Quick access item with the path '$($_)'." }
@@ -117,7 +117,7 @@ function Remove-QuickAccessItem {
         try {
             $_inputObject = if ($PSBoundParameters['Name']) { $Name }
                             elseif ($PSBoundParameters['Path']) { $Path }
-            # Get matching item(s)
+            # Remove matching item(s)
             $_inputObject | ForEach-Object {
                 try {
                     $_item = if ($PSBoundParameters['Name']) { Get-QuickAccessItem -Name $_ -ErrorAction Stop }
