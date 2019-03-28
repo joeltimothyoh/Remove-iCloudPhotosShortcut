@@ -28,7 +28,7 @@ function Get-RegistryItem {
                 }
                 $_item
             }catch {
-                "$($_.Exception.Message)" | Write-Error
+                $_ | Write-Error
             }
         }
     }
@@ -53,7 +53,7 @@ function Remove-RegistryItem {
                 }
                 $_item | Remove-Item -ErrorAction Stop
             }catch {
-                "$($_.Exception.Message)" | Write-Error
+                $_ | Write-Error
             }
         }
     }
@@ -91,11 +91,11 @@ function Get-QuickAccessItem {
                     }
                     $_item
                 }catch {
-                    "$($_.Exception.Message)" | Write-Error
+                    $_ | Write-Error
                 }
             }
         }catch {
-            "$($_.Exception.Message)" | Write-Error
+            $_ | Write-Error
         }
     }
 }
@@ -126,11 +126,11 @@ function Remove-QuickAccessItem {
                     $_itemPresent = $_item | Get-QuickAccessItem -ErrorAction SilentlyContinue
                     if ($_itemPresent) { throw "Failed to remove Quick access shortcut '$($_item.Path)'." }
                 }catch {
-                    "$($_.Exception.Message)" | Write-Error
+                    $_ | Write-Error
                 }
             }
         }catch {
-            "$($_.Exception.Message)" | Write-Error
+            $_ | Write-Error
         }
     }
 }
