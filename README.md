@@ -27,13 +27,19 @@ Powershell "C:\path\to\Remove-iCloudPhotosShortcut.ps1"
 Unverified scripts are restricted from running on Windows by default. In order to use `Remove-iCloudPhotosShortcut`, you will need to allow the execution of unverified scripts. To do so, open PowerShell as an *Administrator*. Then run the command:
 
 ```powershell
-Set-ExecutionPolicy Unrestricted -Force
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted -Force
 ```
 
 If you wish to revert the policy, run the command:
 
 ```powershell
-Set-ExecutionPolicy Undefined -Force
+Set-ExecutionPolicy -Scope LocalMachine -ExecutionPolicy Undefined -Force
+```
+
+To view all execution policies:
+
+```powershell
+Get-ExecutionPolicy -List
 ```
 
 ## Requirements
