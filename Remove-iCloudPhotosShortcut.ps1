@@ -9,6 +9,9 @@ iCloud Photos shortcuts are automatically created under 'This PC' and 'Quick acc
 .\Remove-iCloudPhotosShortcut.ps1
 #>
 
+[CmdletBinding()]
+Param()
+
 # Gets registry item(s)
 function Get-RegistryItem {
     [CmdletBinding()]
@@ -144,12 +147,12 @@ function Remove-iCloudPhotosShortcut {
         # iCloud Photos This PC shortcut's associated registry key
         [string]$REGISTRY_KEY_PATH = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{F0D63F85-37EC-4097-B30D-61B4A8917118}'
         try {
-            "Removing the iCloud Photos This PC shortcut" | Write-Host
+            "Removing the iCloud Photos This PC shortcut" | Write-Host -ForegroundColor Yellow
             $_registryItem = Get-RegistryItem -Path $REGISTRY_KEY_PATH -ErrorAction Stop
             $_registryItem.PSPath | Remove-RegistryItem -ErrorAction Stop
             "Successfully removed iCloud Photos This PC shortcut." | Write-Host -ForegroundColor Green
         }catch {
-            "Error: $($_.Exception.Message)" | Write-Host -ForegroundColor Yellow
+            throw
         }
     }
     function Remove-iCloudPhotosQuickAccessShortcut {
@@ -158,16 +161,24 @@ function Remove-iCloudPhotosShortcut {
         # iCloud Photos Quick access shortcut's item path
         [string]$QA_ITEM_PATH = '::{20D04FE0-3AEA-1069-A2D8-08002B30309D}\::{F0D63F85-37EC-4097-B30D-61B4A8917118}'
         try {
-            "Removing the iCloud Photos Quick access shortcut" | Write-Host
+            "Removing the iCloud Photos Quick access shortcut" | Write-Host -ForegroundColor Yellow
             $_quickAccessItem = Get-QuickAccessItem -Path $QA_ITEM_PATH -ErrorAction Stop
             $_quickAccessItem | Remove-QuickAccessItem -ErrorAction Stop
             "Successfully removed iCloud Photos Quick access shortcut." | Write-Host -ForegroundColor Green
         }catch {
-            "Error: $($_.Exception.Message)" | Write-Host -ForegroundColor Yellow
+            throw
         }
     }
-    Remove-iCloudPhotosThisPCShortcut
-    Remove-iCloudPhotosQuickAccessShortcut
+    try {
+        Remove-iCloudPhotosThisPCShortcut
+    }catch {
+        $_ | Write-Error
+    }
+    try {
+        Remove-iCloudPhotosQuickAccessShortcut
+    }catch {
+        $_ | Write-Error
+    }
 }
 
 # Call main function
