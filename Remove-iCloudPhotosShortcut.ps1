@@ -7,6 +7,9 @@ iCloud Photos shortcuts are automatically created under 'This PC' and 'Quick acc
 
 .EXAMPLE
 .\Remove-iCloudPhotosShortcut.ps1
+
+.LINK
+https://github.com/joeltimothyoh/Remove-iCloudPhotosShortcut
 #>
 
 [CmdletBinding()]
