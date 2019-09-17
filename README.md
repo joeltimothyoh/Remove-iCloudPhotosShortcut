@@ -19,24 +19,18 @@ A message of success will be printed on the successful removal of each shortcut.
 Runs the `Remove-iCloudPhotosShortcut.ps1` script in an instance of PowerShell.
 
 ```powershell
-Powershell "C:\path\to\Remove-iCloudPhotosShortcut.ps1"
+powershell -File "C:\path\to\Remove-iCloudPhotosShortcut.ps1"
 ```
 
 ## Security
 
-Unverified scripts are restricted from running on Windows by default. In order to use `Remove-iCloudPhotosShortcut`, you will need to allow the execution of unverified scripts. To do so, open PowerShell as an *Administrator*. Then run the command:
+Unverified scripts are restricted from running on Windows by default. You can bypass the security errors by overriding the default execution policy of the powershell process like so:
 
 ```powershell
-Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted -Force
+powershell -ExecutionPolicy Unrestricted -File "C:\path\to\Remove-iCloudPhotosShortcut.ps1"
 ```
 
-If you wish to revert the policy, run the command:
-
-```powershell
-Set-ExecutionPolicy -Scope LocalMachine -ExecutionPolicy Undefined -Force
-```
-
-To view all execution policies:
+To view all current execution policies on the system:
 
 ```powershell
 Get-ExecutionPolicy -List
