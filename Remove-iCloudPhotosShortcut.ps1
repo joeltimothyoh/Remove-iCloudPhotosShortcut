@@ -13,7 +13,7 @@ https://github.com/joeltimothyoh/Remove-iCloudPhotosShortcut
 #>
 
 [CmdletBinding()]
-Param()
+param()
 
 # Gets registry item(s)
 function Get-RegistryItem {
@@ -143,10 +143,10 @@ function Remove-QuickAccessItem {
 
 function Remove-iCloudPhotosShortcut {
     [CmdletBinding()]
-    Param()
+    param()
     function Remove-iCloudPhotosThisPCShortcut {
         [CmdletBinding()]
-        Param()
+        param()
         # iCloud Photos This PC shortcut's associated registry key
         [string]$REGISTRY_KEY_PATH = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{F0D63F85-37EC-4097-B30D-61B4A8917118}'
         try {
@@ -160,7 +160,7 @@ function Remove-iCloudPhotosShortcut {
     }
     function Remove-iCloudPhotosQuickAccessShortcut {
         [CmdletBinding()]
-        Param()
+        param()
         # iCloud Photos Quick access shortcut's item path
         [string]$QA_ITEM_PATH = '::{20D04FE0-3AEA-1069-A2D8-08002B30309D}\::{F0D63F85-37EC-4097-B30D-61B4A8917118}'
         try {
