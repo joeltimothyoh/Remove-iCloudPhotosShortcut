@@ -26,7 +26,6 @@ try {
     $failedCount++
 }
 
-"Test Results:" | Write-Host
 if ($failedCount -gt 0) {
     "$failedCount tests failed." | Write-Warning
 }
