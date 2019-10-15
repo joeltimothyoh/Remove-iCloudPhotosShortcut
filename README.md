@@ -17,9 +17,9 @@ iCloud Photos shortcuts are automatically created under *This PC* and *Quick acc
 
 ## Requirements
 
-- **Windows** with [Powershell 4.0 or later](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-windows-powershell?view=powershell-5.1), or ***nix** with [Powershell Core](https://github.com/powershell/powershell).
+* \***Windows** with [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/setup/installing-windows-powershell?view=powershell-5.1).
 
-* Windows with [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/setup/installing-windows-powershell?view=powershell-5.1).
+\**Quick access* management is limited to Windows OS versions **10.0.10240** and higher.
 
 ## Installation
 
