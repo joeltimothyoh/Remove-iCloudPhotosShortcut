@@ -22,14 +22,14 @@ function Remove-QuickAccessItem {
                 $_item.InvokeVerb("unpinfromhome")      # The method does not return any value. A post-check is necessary to ascertain successful removal
                 try {
                     $_itemPresent = $_item | Get-QuickAccessItem -ErrorAction Stop
-                }catch [System.Management.Automation.ItemNotFoundException]{
+                }catch [System.Management.Automation.ItemNotFoundException] {
                     return
                 }
                 if ($_itemPresent) {
-                    Write-Error -Exception ([System.Management.Automation.RuntimeException]::New("Failed to remove Quick access shortcut '$($_item.Path)'."))
+                    Write-Error -Exception ([System.Management.Automation.RuntimeException]::New("Failed to remove Quick access shortcut '$($_item.Path)'.")) -Category InvalidResult -TargetObject $_
                 }
             }catch {
-                Write-Error -Exception $_.Exception -Message $_.Exception.Message -Category $_.CategoryInfo.Category
+                Write-Error -Exception $_.Exception -Message $_.Exception.Message -Category $_.CategoryInfo.Category -TargetObject $_.TargetObject
             }
         }
     }
