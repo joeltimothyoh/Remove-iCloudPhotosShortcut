@@ -12,6 +12,6 @@ function Remove-iCloudPhotosQuickAccessShortcut {
         "Removing the iCloud Photos Quick access shortcut" | Write-Verbose
         Remove-QuickAccessItem -Path $QA_ITEM_PATH -ErrorAction Stop
     }catch {
-        Write-Error -Exception $_.Exception -Message $_.Exception.Message -Category $_.CategoryInfo.Category
+        Write-Error -Exception $_.Exception -Message $_.Exception.Message -Category $_.CategoryInfo.Category -TargetObject $_.TargetObject
     }
 }
