@@ -62,35 +62,14 @@ Remove-iCloudPhotosThisPCShortcut -Verbose
 
 ## Administration
 
-### Module
+### Versions
 
-To import / re-import the module:
-
-```powershell
-# Installed version
-Import-Module -Name Remove-iCloudPhotosShortcut -Force -Verbose
-
-# Project version
-Import-Module .\src\Remove-iCloudPhotosShortcut\Remove-iCloudPhotosShortcut.psm1 -Force -Verbose
-```
-
-To remove imported functions of the module:
+To list all available functions of the module:
 
 ```powershell
-Remove-Module -Name Remove-iCloudPhotosShortcut -Verbose
+Get-Command -Module Remove-iCloudPhotosShortcut
 ```
 
-To list imported versions of the module:
-
-```powershell
-Get-Module -Name Remove-iCloudPhotosShortcut
-```
-
-To list all installed versions of the module available for import:
-
-```powershell
-Get-Module -Name Remove-iCloudPhotosShortcut -ListAvailable -Verbose
-```
 
 To list versions of the module on `PSGallery`:
 
@@ -102,7 +81,7 @@ Find-Module -Name Remove-iCloudPhotosShortcut -Repository PSGallery -Verbose
 Find-Module -Name Remove-iCloudPhotosShortcut -Repository PSGallery -AllVersions -Verbose
 ```
 
-To update the module (Existing versions are left intact):
+To update the module (**Existing versions are left intact**):
 
 ```powershell
 # Latest
@@ -143,4 +122,34 @@ Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -Verbose
 
 # PSGallery (untrusted)
 Set-PSRepository -Name PSGallery -InstallationPolicy Untrusted -Verbose
+```
+
+### Development
+
+To import / re-import the module:
+
+```powershell
+# Installed version
+Import-Module -Name Remove-iCloudPhotosShortcut -Force -Verbose
+
+# Project version
+Import-Module .\src\Remove-iCloudPhotosShortcut\Remove-iCloudPhotosShortcut.psm1 -Force -Verbose
+```
+
+To remove imported functions of the module:
+
+```powershell
+Remove-Module -Name Remove-iCloudPhotosShortcut -Verbose
+```
+
+To list imported versions of the module:
+
+```powershell
+Get-Module -Name Remove-iCloudPhotosShortcut
+```
+
+To list all installed versions of the module available for import:
+
+```powershell
+Get-Module -Name Remove-iCloudPhotosShortcut -ListAvailable -Verbose
 ```
