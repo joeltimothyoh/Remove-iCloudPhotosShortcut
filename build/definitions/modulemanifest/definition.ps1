@@ -10,7 +10,7 @@
     Author = 'Joel Timothy Oh'
     CompanyName = 'Joel Timothy Oh'
     Copyright = '(c) 2019 Joel Timothy Oh'
-    Description = 'Removes iCloud Photos shortcuts from "This PC" and "Quick access" on Windows.'
+    Description = 'A powershell module for removing iCloud Photos shortcuts from This PC and Quick access on Windows.'
     PowerShellVersion = '3.0'
     # PowerShellHostName = ''
     # PowerShellHostVersion = ''
