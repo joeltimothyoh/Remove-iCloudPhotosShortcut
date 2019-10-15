@@ -21,12 +21,14 @@ try {
     Remove-iCloudPhotosQuickAccessShortcut -ErrorAction Stop
 }catch [System.Management.Automation.ItemNotFoundException] {
     'Success' | Write-Host
-}catch [System.Management.Automation.RuntimeException] {
+}catch [System.PlatformNotSupportedException] {
     if ([System.Environment]::OSVersion.Version -lt [Version]'10.0.10240') {
         'Success'
     }else {
-        throw
+        $_ | Write-Error
+        $failedCount++
     }
+}catch {
     $_ | Write-Error
     $failedCount++
 }

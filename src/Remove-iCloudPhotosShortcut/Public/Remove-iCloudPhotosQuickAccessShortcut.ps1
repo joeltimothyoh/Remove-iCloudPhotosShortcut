@@ -2,7 +2,7 @@ function Remove-iCloudPhotosQuickAccessShortcut {
     [CmdletBinding()]
     param()
     if ([System.Environment]::OSVersion.Version -lt [Version]'10.0.10240') {
-        Write-Error -Exception ([System.Management.Automation.RuntimeException]::New("The function is not supported on this version of Windows."))
+        Write-Error -Exception ([System.PlatformNotSupportedException]::New("The function is not supported on this version of Windows."))
         return
     }
     # iCloud Photos Quick access shortcut's item path
