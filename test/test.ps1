@@ -26,6 +26,7 @@ try {
         $testFailed = $true
     }
 
+    "End of tests" | Write-Host
     if ($testFailed) {
         throw "One or more tests failed."
     }
