@@ -23,7 +23,7 @@ Each time *iCloud for Windows* is installed or updated, iCloud Photos shortcuts 
 
 ## Installation
 
-First, ensure [`PSGallery`](https://www.poqwershellgallery.com/) is registered as a PowerShell repository:
+First, ensure [`PSGallery`](https://www.powershellgallery.com/) is registered as a PowerShell repository:
 
 ```powershell
 Register-PSRepository -Default -Verbose
