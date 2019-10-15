@@ -8,7 +8,7 @@ $failedCount = 0
 
 "Function: Remove-iCloudPhotosThisPCShortcut" | Write-Host
 try {
-    Remove-iCloudPhotosThisPCShortcut
+    Remove-iCloudPhotosThisPCShortcut -ErrorAction Stop
 }catch [System.Management.Automation.ItemNotFoundException] {
     'Success' | Write-Host
 }catch {
@@ -18,7 +18,7 @@ try {
 
 "Function: Remove-iCloudPhotosQuickAccessShortcut" | Write-Host
 try {
-    Remove-iCloudPhotosQuickAccessShortcut
+    Remove-iCloudPhotosQuickAccessShortcut -ErrorAction Stop
 }catch [System.Management.Automation.ItemNotFoundException] {
     'Success' | Write-Host
 }catch {
