@@ -10,7 +10,7 @@ $failedCount = 0
 try {
     Remove-iCloudPhotosThisPCShortcut -ErrorAction Stop
 }catch [System.Management.Automation.ItemNotFoundException] {
-    'Success' | Write-Host
+    'Pass' | Write-Host
 }catch {
     $_ | Write-Error
     $failedCount++
@@ -20,10 +20,10 @@ try {
 try {
     Remove-iCloudPhotosQuickAccessShortcut -ErrorAction Stop
 }catch [System.Management.Automation.ItemNotFoundException] {
-    'Success' | Write-Host
+    'Pass' | Write-Host
 }catch [System.PlatformNotSupportedException] {
     if ([System.Environment]::OSVersion.Version -lt [Version]'10.0.10240') {
-        'Success'
+        'Pass'
     }else {
         $_ | Write-Error
         $failedCount++
