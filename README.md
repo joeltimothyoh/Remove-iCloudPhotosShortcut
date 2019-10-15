@@ -19,7 +19,7 @@ Each time *iCloud for Windows* is installed or updated, iCloud Photos shortcuts 
 
 * \***Windows** with [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/setup/installing-windows-powershell?view=powershell-5.1).
 
-\**Quick access* management is limited to Windows OS versions **10.0.10240** and higher.
+\**Quick access* management is limited to Windows OS versions **10.0.10240** or higher.
 
 ## Installation
 
