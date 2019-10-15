@@ -23,7 +23,7 @@ try {
     'Pass' | Write-Host
 }catch [System.PlatformNotSupportedException] {
     if ([System.Environment]::OSVersion.Version -lt [Version]'10.0.10240') {
-        'Pass'
+        'Pass' | Write-Host
     }else {
         $_ | Write-Error
         $failedCount++
