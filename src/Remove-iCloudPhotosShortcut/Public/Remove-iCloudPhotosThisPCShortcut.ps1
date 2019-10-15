@@ -7,6 +7,6 @@ function Remove-iCloudPhotosThisPCShortcut {
         "Removing the iCloud Photos This PC shortcut" | Write-Verbose
         Remove-Item -Path $REGISTRY_KEY_PATH -ErrorAction Stop
     }catch {
-        throw
+        Write-Error -Exception $_.Exception -Message $_.Exception.Message -Category $_.CategoryInfo.Category
     }
 }
