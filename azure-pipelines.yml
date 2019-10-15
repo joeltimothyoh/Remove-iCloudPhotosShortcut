@@ -35,14 +35,14 @@ stages:
     - checkout: self
       submodules: recursive
     - template: templates/azure-pipelines/windows/powershell/continuous-build.yml@PSModulePublisher
-  - job: windows_powershell_5_0
-    displayName: '[Windows] PowerShell 5.0'
-    pool:
-      vmImage: vs2015-win2012r2
-    steps:
-    - checkout: self
-      submodules: recursive
-    - template: templates/azure-pipelines/windows/powershell/continuous-build.yml@PSModulePublisher
+  # - job: windows_powershell_5_0
+  #   displayName: '[Windows] PowerShell 5.0'
+  #   pool:
+  #     vmImage: vs2015-win2012r2
+  #   steps:
+  #   - checkout: self
+  #     submodules: recursive
+  #   - template: templates/azure-pipelines/windows/powershell/continuous-build.yml@PSModulePublisher
 - stage: publish
   displayName: Publish
   dependsOn: build_test
