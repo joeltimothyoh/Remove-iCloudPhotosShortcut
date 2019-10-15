@@ -13,23 +13,20 @@ A powershell module for removing iCloud Photos shortcuts from *This PC* and *Qui
 
 ## Introduction
 
-iCloud Photos shortcuts are automatically created under *This PC* and *Quick access* in File Explorer on **Windows** each time *iCloud for Windows* is installed or updated, with the former being impossible to remove interactively.
-
-
-This module attempts to ease removal of the shortcuts by doing so programmatically.
+Each time *iCloud for Windows* is installed or updated, iCloud Photos shortcuts are automatically created under *Quick access* and *This PC* in File Explorer, with the latter being impossible to remove interactively. This module attempts to ease removal of the shortcuts by doing so programmatically.
 
 ## Requirements
 
 * \***Windows** with [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/setup/installing-windows-powershell?view=powershell-5.1).
 
-\**Quick access* management is limited to Windows OS versions **10.0.10240** and higher.
+\**Quick access* management is limited to Windows OS versions **10.0.10240** or higher.
 
 ## Installation
 
 First, ensure [`PSGallery`](https://www.poqwershellgallery.com/) is registered as a PowerShell repository:
 
 ```powershell
-Register-PSRepository -Default
+Register-PSRepository -Default -Verbose
 ```
 
 To install the module:
@@ -63,7 +60,69 @@ Remove-iCloudPhotosThisPCShortcut -Verbose
 
 ## Administration
 
-### Module
+### Versions
+
+To list all available functions of the module:
+
+```powershell
+Get-Command -Module Remove-iCloudPhotosShortcut
+```
+
+
+To list versions of the module on `PSGallery`:
+
+```powershell
+# Latest
+Find-Module -Name Remove-iCloudPhotosShortcut -Repository PSGallery -Verbose
+
+# All versions
+Find-Module -Name Remove-iCloudPhotosShortcut -Repository PSGallery -AllVersions -Verbose
+```
+
+To update the module (**Existing versions are left intact**):
+
+```powershell
+# Latest
+Update-Module -Name Remove-iCloudPhotosShortcut -Verbose
+
+# Specific version
+Update-Module -Name Remove-iCloudPhotosShortcut -RequiredVersion x.x.x -Verbose
+```
+
+To uninstall the module:
+
+```powershell
+# Latest
+Uninstall-Module -Name Remove-iCloudPhotosShortcut -Verbose
+
+# All versions
+Uninstall-Module -Name Remove-iCloudPhotosShortcut -AllVersions -Verbose
+
+# To uninstall all other versions other than x.x.x
+Get-Module -Name Remove-iCloudPhotosShortcut -ListAvailable | ? { $_.Version -ne 'x.x.x' } | % { Uninstall-Module -Name $_.Name -RequiredVersion $_.Version -Verbose }
+
+# Tip: Simulate uninstalls with -WhatIf
+```
+
+### Repositories
+
+To get all registered PowerShell repositories:
+
+```powershell
+Get-PSRepository -Verbose
+```
+
+To set the installation policy for the `PSGallery` repository:
+
+```powershell
+# PSGallery (trusted)
+Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -Verbose
+
+# PSGallery (untrusted)
+Set-PSRepository -Name PSGallery -InstallationPolicy Untrusted -Verbose
+```
+
+### Development
 
 To import / re-import the module:
 
@@ -91,57 +150,4 @@ To list all installed versions of the module available for import:
 
 ```powershell
 Get-Module -Name Remove-iCloudPhotosShortcut -ListAvailable -Verbose
-```
-
-To list versions of the module on `PSGallery`:
-
-```powershell
-# Latest
-Find-Module -Name Remove-iCloudPhotosShortcut -Repository PSGallery -Verbose
-
-# All versions
-Find-Module -Name Remove-iCloudPhotosShortcut -Repository PSGallery -AllVersions -Verbose
-```
-
-To update the module:
-
-```powershell
-# Latest
-Update-Module -Name Remove-iCloudPhotosShortcut -Verbose
-
-# Specific version (Existing versions are left intact)
-Update-Module -Name Remove-iCloudPhotosShortcut -RequiredVersion x.x.x -Verbose
-```
-
-To uninstall the module:
-
-```powershell
-# Latest
-Uninstall-Module -Name Remove-iCloudPhotosShortcut -Verbose
-
-# All versions
-Uninstall-Module -Name Remove-iCloudPhotosShortcut -AllVersions -Verbose
-
-# To uninstall all other versions other than x.x.x
-Get-Module -Name Remove-iCloudPhotosShortcut -ListAvailable | ? { $_.Version -ne 'x.x.x' } | % { Uninstall-Module -Name $_.Name -RequiredVersion $_.Version -Verbose }
-
-# Tip: Use Uninstall-Module -WhatIf to simulate uninstalls
-```
-
-### Repositories
-
-To get all registered PowerShell repositories:
-
-```powershell
-Get-PSRepository -Verbose
-```
-
-To set the installation policy for a repository:
-
-```powershell
-# PSGallery (trusted)
-Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -Verbose
-
-# PSGallery (untrusted)
-Set-PSRepository -Name PSGallery -InstallationPolicy Untrusted -Verbose
 ```
