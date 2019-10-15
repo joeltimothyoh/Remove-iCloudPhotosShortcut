@@ -15,7 +15,6 @@ A powershell module for removing iCloud Photos shortcuts from *This PC* and *Qui
 
 iCloud Photos shortcuts are automatically created under *This PC* and *Quick access* in File Explorer on **Windows** each time *iCloud for Windows* is installed or updated, with the former being impossible to remove interactively.
 
-
 This module attempts to ease removal of the shortcuts by doing so programmatically.
 
 ## Requirements
@@ -29,7 +28,7 @@ This module attempts to ease removal of the shortcuts by doing so programmatical
 First, ensure [`PSGallery`](https://www.poqwershellgallery.com/) is registered as a PowerShell repository:
 
 ```powershell
-Register-PSRepository -Default
+Register-PSRepository -Default -Verbose
 ```
 
 To install the module:
@@ -103,13 +102,13 @@ Find-Module -Name Remove-iCloudPhotosShortcut -Repository PSGallery -Verbose
 Find-Module -Name Remove-iCloudPhotosShortcut -Repository PSGallery -AllVersions -Verbose
 ```
 
-To update the module:
+To update the module (Existing versions are left intact):
 
 ```powershell
 # Latest
 Update-Module -Name Remove-iCloudPhotosShortcut -Verbose
 
-# Specific version (Existing versions are left intact)
+# Specific version
 Update-Module -Name Remove-iCloudPhotosShortcut -RequiredVersion x.x.x -Verbose
 ```
 
@@ -125,7 +124,7 @@ Uninstall-Module -Name Remove-iCloudPhotosShortcut -AllVersions -Verbose
 # To uninstall all other versions other than x.x.x
 Get-Module -Name Remove-iCloudPhotosShortcut -ListAvailable | ? { $_.Version -ne 'x.x.x' } | % { Uninstall-Module -Name $_.Name -RequiredVersion $_.Version -Verbose }
 
-# Tip: Use Uninstall-Module -WhatIf to simulate uninstalls
+# Tip: Simulate uninstalls with -WhatIf
 ```
 
 ### Repositories
@@ -136,7 +135,7 @@ To get all registered PowerShell repositories:
 Get-PSRepository -Verbose
 ```
 
-To set the installation policy for a repository:
+To set the installation policy for the `PSGallery` repository:
 
 ```powershell
 # PSGallery (trusted)
