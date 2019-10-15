@@ -68,7 +68,6 @@ To list all available functions of the module:
 Get-Command -Module Remove-iCloudPhotosShortcut
 ```
 
-
 To list versions of the module on `PSGallery`:
 
 ```powershell
