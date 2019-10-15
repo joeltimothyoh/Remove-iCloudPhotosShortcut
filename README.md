@@ -1,14 +1,29 @@
 # Remove-iCloudPhotosShortcut
 
+[![badge-build-azuredevops-build-img][]][badge-build-azuredevops-build-src] [![badge-version-github-release-img][]][badge-version-github-release-src] [![badge-version-powershellgallery-releases-img][]][badge-version-powershellgallery-releases-src]
+
+[badge-build-azuredevops-build-img]: https://img.shields.io/azure-devops/build/joeltimothyoh/Remove-iCloudPhotosShortcut/19/master.svg?label=build&logo=azure-pipelines&style=flat-square
+[badge-build-azuredevops-build-src]: https://dev.azure.com/joeltimothyoh/Remove-iCloudPhotosShortcut/_build?definitionId=19
+[badge-version-github-release-img]: https://img.shields.io/github/v/release/joeltimothyoh/Remove-iCloudPhotosShortcut?style=flat-square
+[badge-version-github-release-src]: https://github.com/joeltimothyoh/Remove-iCloudPhotosShortcut/releases
+[badge-version-powershellgallery-releases-img]: https://img.shields.io/powershellgallery/v/Remove-iCloudPhotosShortcut?logo=powershell&logoColor=white&label=PSGallery&labelColor=&style=flat-square
+[badge-version-powershellgallery-releases-src]: https://www.powershellgallery.com/packages/Remove-iCloudPhotosShortcut/
+
 Removes iCloud Photos shortcuts from *This PC* and *Quick access* on Windows.
 
 ## Description
 
 iCloud Photos shortcuts are automatically created under *This PC* and *Quick access* in `File Explorer` on **Windows** each time *iCloud for Windows* is installed or updated, with the former being impossible to remove interactively. The module attempts to ease removal of the shortcuts by doing so programmatically.
 
+## Requirements
+
+- **Windows** with [Powershell 4.0 or later](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-windows-powershell?view=powershell-5.1), or ***nix** with [Powershell Core](https://github.com/powershell/powershell).
+
+* Windows with [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/setup/installing-windows-powershell?view=powershell-5.1).
+
 ## Installation
 
-First, ensure [`PSGallery`](https://www.powershellgallery.com/) is registered as a PowerShell repository:
+First, ensure [`PSGallery`](https://www.poqwershellgallery.com/) is registered as a PowerShell repository:
 
 ```powershell
 Register-PSRepository -Default

@@ -2,6 +2,7 @@ function Remove-iCloudPhotosQuickAccessShortcut {
     [CmdletBinding()]
     param()
     if ([System.Environment]::OSVersion.Version -lt [Version]'10.0.10240') {
+        "Checking OS version" | Write-Verbose
         Write-Error -Exception ([System.PlatformNotSupportedException]::New("The function is not supported on this version of Windows."))
         return
     }
