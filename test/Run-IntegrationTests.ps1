@@ -10,7 +10,7 @@ $failedCount = 0
 try {
     Remove-iCloudPhotosThisPCShortcut
 }catch [System.Management.Automation.ItemNotFoundException] {
-    'Success'
+    'Success' | Write-Host
 }catch {
     $_ | Write-Error
     $failedCount++
@@ -20,7 +20,7 @@ try {
 try {
     Remove-iCloudPhotosQuickAccessShortcut
 }catch [System.Management.Automation.ItemNotFoundException] {
-    'Success'
+    'Success' | Write-Host
 }catch {
     $_ | Write-Error
     $failedCount++
