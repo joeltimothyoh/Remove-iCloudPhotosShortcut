@@ -5,7 +5,11 @@ trigger:
   tags:
     include:
     - '*'
-pr: none
+pr:
+  autoCancel: false
+  branches:
+    include:
+    - '*'
 
 resources:
   repositories:
