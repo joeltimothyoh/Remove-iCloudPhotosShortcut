@@ -58,16 +58,15 @@ To remove the iCloud *This PC* shortcut (**Requires elevation**):
 Remove-iCloudPhotosThisPCShortcut -Verbose
 ```
 
-## Administration
-
-### Versions
-
 To list all available functions of the module:
 
 ```powershell
 Get-Command -Module Remove-iCloudPhotosShortcut
 ```
 
+## Administration
+
+### Versions
 
 To list versions of the module on `PSGallery`:
 

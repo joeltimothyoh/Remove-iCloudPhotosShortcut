@@ -8,7 +8,7 @@ $global:PesterDebugPreference_ShowFullErrors = $true
 try {
     # Install test dependencies
     "Installing test dependencies" | Write-Host
-    & "$PSScriptRoot\Install-TestDependencies.ps1"
+    & "$PSScriptRoot\Install-TestDependencies.ps1" > $null
 
     # Run unit tests
     "Running unit tests" | Write-Host
