@@ -22,7 +22,7 @@ resources:
     type: github
     name: theohbrothers/PSRepositoryReleaseManager
     endpoint: joeltimothyoh
-    ref: refs/tags/v0.1.0
+    ref: refs/tags/v0.4.4
 
 stages:
 - stage: build_test
@@ -93,4 +93,5 @@ stages:
     steps:
     - checkout: self
       submodules: recursive
-    - template: templates/azure-pipelines/pwsh/release.yml@PSRepositoryReleaseManager
+    - template: templates/azure-pipelines/entrypoint/generate.yml@PSRepositoryReleaseManager
+    - template: templates/azure-pipelines/entrypoint/release.yml@PSRepositoryReleaseManager
