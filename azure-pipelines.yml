@@ -17,7 +17,7 @@ resources:
     type: github
     name: theohbrothers/PSModulePublisher
     endpoint: joeltimothyoh                   # Check for your 'Type: Github' connection under 'Project Settings' > 'Service connections'
-    ref: refs/tags/v0.2.0
+    ref: refs/tags/v0.3.2
   - repository: PSRepositoryReleaseManager
     type: github
     name: theohbrothers/PSRepositoryReleaseManager
@@ -35,7 +35,7 @@ stages:
     steps:
     - checkout: self
       submodules: recursive
-    - template: templates/azure-pipelines/windows/pwsh/continuous-build.yml@PSModulePublisher
+    - template: templates/azure-pipelines/entrypoint/windows/continuous-build.yml@PSModulePublisher
   - job: windows_2019
     displayName: '[Windows Server 2019]'
     pool:
@@ -43,7 +43,7 @@ stages:
     steps:
     - checkout: self
       submodules: recursive
-    - template: templates/azure-pipelines/windows/powershell/continuous-build.yml@PSModulePublisher
+    - template: templates/azure-pipelines/entrypoint/windows/powershell/continuous-build.yml@PSModulePublisher
   - job: windows_1803
     displayName: '[Windows Server Core 1803]'
     pool:
@@ -51,7 +51,7 @@ stages:
     steps:
     - checkout: self
       submodules: recursive
-    - template: templates/azure-pipelines/windows/powershell/continuous-build.yml@PSModulePublisher
+    - template: templates/azure-pipelines/entrypoint/windows/powershell/continuous-build.yml@PSModulePublisher
   - job: windows_2016
     displayName: '[Windows Server 2016]'
     pool:
@@ -59,7 +59,7 @@ stages:
     steps:
     - checkout: self
       submodules: recursive
-    - template: templates/azure-pipelines/windows/powershell/continuous-build.yml@PSModulePublisher
+    - template: templates/azure-pipelines/entrypoint/windows/powershell/continuous-build.yml@PSModulePublisher
   - job: windows_2012
     displayName: '[Windows Server 2012 R2]'
     pool:
@@ -67,7 +67,7 @@ stages:
     steps:
     - checkout: self
       submodules: recursive
-    - template: templates/azure-pipelines/windows/powershell/continuous-build.yml@PSModulePublisher
+    - template: templates/azure-pipelines/entrypoint/windows/powershell/continuous-build.yml@PSModulePublisher
 - stage: publish
   displayName: Publish
   dependsOn: build_test
@@ -79,8 +79,8 @@ stages:
     steps:
     - checkout: self
       submodules: recursive
-    - template: templates/azure-pipelines/windows/powershell/continuous-build.yml@PSModulePublisher
-    - template: templates/azure-pipelines/windows/powershell/publish.yml@PSModulePublisher
+    - template: templates/azure-pipelines/entrypoint/windows/powershell/continuous-build.yml@PSModulePublisher
+    - template: templates/azure-pipelines/entrypoint/windows/powershell/publish.yml@PSModulePublisher
 - stage: release
   displayName: Release
   dependsOn: publish
