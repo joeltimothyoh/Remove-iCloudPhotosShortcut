@@ -9,7 +9,7 @@
 [badge-version-powershellgallery-releases-img]: https://img.shields.io/powershellgallery/v/Remove-iCloudPhotosShortcut?logo=powershell&logoColor=white&label=PSGallery&labelColor=&style=flat-square
 [badge-version-powershellgallery-releases-src]: https://www.powershellgallery.com/packages/Remove-iCloudPhotosShortcut/
 
-A powershell module for removing iCloud Photos shortcuts from *This PC* and *Quick access* on Windows.
+A PowerShell module for removing iCloud Photos shortcuts from *This PC* and *Quick access* on Windows.
 
 ## Introduction
 
