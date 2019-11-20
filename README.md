@@ -13,7 +13,7 @@ A PowerShell module for removing iCloud Photos shortcuts from *This PC* and *Qui
 
 ## Introduction
 
-Each time *iCloud for Windows* is opened, updated, or installed, iCloud Photos shortcuts are automatically created under *This PC* and/or *Quick access* in File Explorer, with the latter being impossible to remove interactively. This module attempts to ease removal of the shortcuts by doing so programmatically.
+Each time *iCloud for Windows* is opened, updated, or installed, iCloud Photos shortcuts are automatically created under *This PC* and/or *Quick access* in File Explorer, with the former being impossible to remove interactively. This module allows programmatic removal of the shortcuts.
 
 ## Requirements
 
