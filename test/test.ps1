@@ -6,9 +6,11 @@ $VerbosePreference = 'Continue'
 $global:PesterDebugPreference_ShowFullErrors = $true
 
 try {
+    Push-Location $PSScriptRoot
+
     # Install test dependencies
     "Installing test dependencies" | Write-Host
-    & "$PSScriptRoot\Install-TestDependencies.ps1" > $null
+    & "$PSScriptRoot\scripts\dep\Install-TestDependencies.ps1" > $null
 
     # Run unit tests
     "Running unit tests" | Write-Host
@@ -21,7 +23,7 @@ try {
 
     # Run integration tests
     "Running integration tests" | Write-Host
-    $integratedFailedCount = & "$PSScriptRoot\Run-IntegrationTests.ps1"
+    $integratedFailedCount = & "$PSScriptRoot\scripts\integration\Run-IntegrationTests.ps1"
     if ($integratedFailedCount -gt 0) {
         $testFailed = $true
     }
@@ -32,4 +34,6 @@ try {
     }
 }catch {
     throw
+}finally {
+    Pop-Location
 }
