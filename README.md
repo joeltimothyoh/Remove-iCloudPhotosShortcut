@@ -46,13 +46,13 @@ Install-Module -Name Remove-iCloudPhotosShortcut -Repository PSGallery -Scope Al
 
 ### Functions
 
-To remove the iCloud *Quick access* shortcut:
+To remove the iCloud Photos *Quick access* shortcut:
 
 ```powershell
 Remove-iCloudPhotosQuickAccessShortcut -Verbose
 ```
 
-To remove the iCloud *This PC* shortcut (**Requires elevation**):
+To remove the iCloud Photos *This PC* shortcut (**Requires elevation**):
 
 ```powershell
 Remove-iCloudPhotosThisPCShortcut -Verbose
