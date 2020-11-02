@@ -9,15 +9,15 @@
 [badge-version-powershellgallery-releases-img]: https://img.shields.io/powershellgallery/v/Remove-iCloudPhotosShortcut?logo=powershell&logoColor=white&label=PSGallery&labelColor=&style=flat-square
 [badge-version-powershellgallery-releases-src]: https://www.powershellgallery.com/packages/Remove-iCloudPhotosShortcut/
 
-A powershell module for removing iCloud Photos shortcuts from *This PC* and *Quick access* on Windows.
+A PowerShell module for removing iCloud Photos shortcuts from *This PC* and *Quick access* on Windows.
 
 ## Introduction
 
-Each time *iCloud for Windows* is installed or updated, iCloud Photos shortcuts are automatically created under *Quick access* and *This PC* in File Explorer, with the latter being impossible to remove interactively. This module attempts to ease removal of the shortcuts by doing so programmatically.
+Each time *iCloud for Windows* is opened, updated, or installed, iCloud Photos shortcuts are automatically created under *This PC* and/or *Quick access* in File Explorer, with the former being impossible to remove interactively. This module allows programmatic removal of the shortcuts.
 
 ## Requirements
 
-* \***Windows** with [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/setup/installing-windows-powershell?view=powershell-5.1).
+* \***Windows** with [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-windows-powershell).
 
 \**Quick access* management is limited to Windows OS versions **10.0.10240** or higher.
 
@@ -46,21 +46,17 @@ Install-Module -Name Remove-iCloudPhotosShortcut -Repository PSGallery -Scope Al
 
 ### Functions
 
-To remove the iCloud *Quick access* shortcut:
+To remove the iCloud Photos *Quick access* shortcut:
 
 ```powershell
 Remove-iCloudPhotosQuickAccessShortcut -Verbose
 ```
 
-To remove the iCloud *This PC* shortcut (**Requires elevation**):
+To remove the iCloud Photos *This PC* shortcut (**Requires elevation**):
 
 ```powershell
 Remove-iCloudPhotosThisPCShortcut -Verbose
 ```
-
-## Administration
-
-### Versions
 
 To list all available functions of the module:
 
@@ -68,6 +64,9 @@ To list all available functions of the module:
 Get-Command -Module Remove-iCloudPhotosShortcut
 ```
 
+## Administration
+
+### Versions
 
 To list versions of the module on `PSGallery`:
 
